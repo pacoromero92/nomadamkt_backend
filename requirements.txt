@@ -1,0 +1,9 @@
+psycopg2-binary
+pandas
+alembic
+sqlalchemy
+python-dotenv
+fastapi
+python-jose[cryptography] 
+passlib[bcrypt]
+cryptography
