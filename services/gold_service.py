@@ -39,7 +39,7 @@ def fetch_gold():
         for row in silverData
     ])
     if df.empty:
-        return
+        return 0
     df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month
@@ -48,3 +48,4 @@ def fetch_gold():
 
     data = df_agg.to_dict(orient="records")
     upsert_gold_insight(data)
+    return len(df)

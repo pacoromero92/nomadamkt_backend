@@ -56,6 +56,7 @@ def fetch_campaings():
         "limit": 100
     }
     accounts = get_accounts()
+    record = 0
     for account in accounts:
         print(account.account_id , account.name)
         print(account.client.name)
@@ -80,8 +81,9 @@ def fetch_campaings():
                 inplace=True
             )
             df = df.reset_index(drop=True)
-            
+            lenght = len(df)
+            record=record+lenght
             df = df.where(pd.notnull(df), None)
             data = df.to_dict(orient="records")
             upsert_campaings(data)
-        
+    return record 

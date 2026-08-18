@@ -39,14 +39,15 @@ def get_accounts():
 
 def fetch_to_bronze():
     accounts =  get_accounts()
+    read_records  = 0
     for account in accounts:
         campaigns_id = []
         for campaing in account.campaigns:
             campaigns_id.append(campaing.campaign_id)
         
-        print(account.id)
+       
         url_ads = f'{FACEBOOK_URL}{account.account_id}/insights'
-        print(url_ads)
+       
         filter =[
                 {
                     "field": "campaign.id",
@@ -76,7 +77,7 @@ def fetch_to_bronze():
             if 'data' in resp:
                     
                     for row in resp['data'] :
-                        
+                        read_records=read_records+1
                         data = {
                             'campaign_id': row['campaign_id'],
                             'date_start': row['date_start'],
@@ -90,7 +91,8 @@ def fetch_to_bronze():
                         upsert_insight(data)
             url_ads = resp.get("paging", {}).get("next") 
             parametos = None
-        
+    print(read_records)
+    return read_records
 
 
 

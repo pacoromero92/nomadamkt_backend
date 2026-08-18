@@ -31,10 +31,10 @@ def process_to_silver():
         rows = session.query(BronzeCampaignInsights)\
             .filter(BronzeCampaignInsights.is_processed == 0)\
             .all()
-        
+        read_records  = 0
         for row in rows:
             # extraes los datos del raw_data
-           
+            read_records = read_records+1
             row_json = row.raw_data
             message_connection = 0
             cost_per_message =0.0
@@ -88,7 +88,7 @@ def process_to_silver():
             row.is_processed = 1
         
         session.commit()  # un solo commit al final
-
+        return read_records
     
 
 if __name__ == "__main__":
