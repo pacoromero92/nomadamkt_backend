@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 from typing import Generic, TypeVar, List
 T = TypeVar('T')
-
+class UserResponse(BaseModel):
+    name:str
+    email:str
+    rol:str
 class PaginatedResponse(BaseModel, Generic[T]):
     data: List[T]
     total: int
@@ -24,10 +27,7 @@ class TaskResponse(BaseModel):
     status:str
     task_id:str
 
-class UserResponse(BaseModel):
-    name:str
-    email:str
-    rol:str
+
 
 class ObjectRespose(BaseModel,Generic[T]):
         data: T
