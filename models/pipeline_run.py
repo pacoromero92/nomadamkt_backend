@@ -6,7 +6,7 @@ class PipelineRun(Base):
     __tablename__ = 'pipeline_run'
     id = Column(BigInteger, primary_key=True)  
     excecution_id = Column(UUID)
-    started_at  = Column(TIMESTAMP)
+    started_at  = Column(TIMESTAMP,default=datetime.now)
     finished_at   = Column(TIMESTAMP,nullable=True)
     status  = Column(String)
     error_message  = Column(Text,nullable=True)

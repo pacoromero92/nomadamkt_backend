@@ -9,7 +9,7 @@ class ProcessLog(Base):
     process_name    = Column(String)
     layer               =   Column(String)
     status              =  Column(String)
-    started_at         =Column(TIMESTAMP)
+    started_at         =Column(TIMESTAMP,default=datetime.now)
     finished_at        =Column(TIMESTAMP,nullable=True)
     duration_ms         =Column(BigInteger,nullable=True)
     records_read        =Column(Integer,default=0)
