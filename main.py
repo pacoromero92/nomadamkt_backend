@@ -6,7 +6,7 @@ from api.routes.auth import router as auth_router
 from api.routes.clients import router as client_router
 from api.routes.sync import router as services_router
 from fastapi.middleware.cors import CORSMiddleware
-Base.metadata.create_all(engine) 
+
 
 
 
