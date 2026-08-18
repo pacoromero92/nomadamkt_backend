@@ -1,6 +1,9 @@
 from logging.config import fileConfig
 
+
+from sqlalchemy import create_engine
 from sqlalchemy import engine_from_config
+
 from sqlalchemy import pool
 import sys
 import os
@@ -72,15 +75,22 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
+    
+
+    db_string = os.getenv("DB_STRING")
+
+    if not db_string:
+        raise RuntimeError("DB_STRING no está configurada")
+
+    connectable = create_engine(
+        db_string,
         poolclass=pool.NullPool,
     )
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
         )
 
         with context.begin_transaction():
