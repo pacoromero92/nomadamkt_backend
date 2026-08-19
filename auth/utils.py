@@ -5,9 +5,13 @@ from datetime import datetime, timedelta
 from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import HTTPException,status,Depends
+import os
+from dotenv import load_dotenv
 
-SECRET_KEY = "1234"  # cámbialo en producción
-SECRET_KEY_REFRESH_TOKEN = "124"
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY_REFRESH_TOKEN = os.getenv("SECRET_KEY_REFRESH_TOKEN")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 REFRESH_TOKEN_EXPIRE_DAYS = 1 
