@@ -14,7 +14,8 @@ REFRESH_TOKEN_EXPIRE_DAYS = 1
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="auth/login"
 )
-pwd_context = CryptContext(schemes=["bcrypt"])
+pwd_context = CryptContext(    schemes=["argon2"],
+    deprecated="auto")
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
