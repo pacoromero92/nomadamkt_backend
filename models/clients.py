@@ -8,4 +8,5 @@ class Clients(Base):
     name = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
     users = relationship("UsersClients", back_populates="clients")
-    ad_accounts = relationship("Adaccount", back_populates="client")    
+    ad_accounts = relationship("Adaccount", back_populates="client")  
+    kpis = relationship("Kpis",secondary="kpis_clients",back_populates="clients")  
