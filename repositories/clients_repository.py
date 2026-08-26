@@ -1,6 +1,5 @@
 from models.clients import Clients
 from models.adaccount import Adaccount
-from models.gold import GoldCampaignInsights
 from models.silver import SilverCampaignInsights
 from database import SessionLocal
 from fastapi.exceptions import HTTPException
@@ -87,42 +86,6 @@ def get_adaccounts():
             "total_pages": 0  # ceil division
         }
 
-def get_kpis(client_id,month,year):
-    try:
-        client =get_client(client_id)['data']
-        for account in client.ad_accounts:
-            print(account.id)
-            campaings = get_data_from_account(account_id=account.id,month=month,year=year)
 
-        return{
-            'kpis':{
 
-            },
-            'meta_campaings':campaings
-        }
-    except HTTPException as e:
-        raise HTTPException(e.status_code,e.detail)
-    except Exception as e:
-        print(e)
-        raise HTTPException(status_code=505,detail="Something went wrong")
 
-def get_data_from_account(account_id,month:str,year:str):
-    total_spend=0
-    list_campaings = []
-    leads = 0
-    sells = 0
-    message = 0 
-    cost_per_lead=0
-    cost_per_sells = 0
-    cost_per_message = 0
-    with SessionLocal() as session:
-        results = session.query(GoldCampaignInsights)\
-                        .filter(GoldCampaignInsights.month==month)\
-                        .filter(GoldCampaignInsights.year==year)\
-                        .filter(GoldCampaignInsights.ad_accounts_id==account_id).all()
-       
-        for result in results:
-            total_spend = total_spend + result.spend
-            list_campaings.append(result)
-        print(total_spend)
-        return list_campaings

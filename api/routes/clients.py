@@ -2,7 +2,7 @@ from fastapi import APIRouter,BackgroundTasks,Depends,HTTPException
 import time
 from datetime import datetime
 from typing import Optional
-from repositories.clients_repository import create_clients,get_clients,get_adaccounts,edit_client,get_client,get_kpis
+from repositories.clients_repository import create_clients,get_clients,get_adaccounts,edit_client,get_client
 
 from schemas.response_schema import PaginatedResponse,MessageResponse,ObjectRespose
 from schemas.client_schema import ClientObject,ClientGetObject,AdAccountObject
@@ -36,16 +36,6 @@ async def get_unassign_adaccounts(
 async def get_unassign_adaccounts():
     return get_adaccounts()
 
-@router.get("/dashboard/{id}")
-async def get_kpis_client(
-    id,
-    month: int = datetime.now().month,
-    year: int = datetime.now().year,
-    current_user=Depends(get_current_user)):
-    (user_id,rol,_)=current_user  
-    if has_access(['Admin'],rol):
-       
-        return get_kpis(id,str(month),str(year))
 
 @router.put("/{id}")
 def put_client(id:str,data:ClientObject):
