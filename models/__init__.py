@@ -8,3 +8,5 @@ from .adcampaigns import AdCampaingns
 from .gold import GoldCampaignInsights
 from .pipeline_run import PipelineRun
 from .process_log import ProcessLog
+from .kpis import Kpis
+from .kpis_clients import Kpis_Clients
