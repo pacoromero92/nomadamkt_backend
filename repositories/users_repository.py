@@ -12,7 +12,7 @@ def login(email:str,password:str):
         return {"access_token": token, "refresh_token": refresh_token,"status_code":200,"user":user}
 
     return {"access_token": token, "token_type": "bearer"}
-def registrer_user(email:str,password:str,name:str):
+def registrer_user(email:str,password:str,name:str,rol:str):
     with SessionLocal() as session:
         if session.query(Users).filter(Users.email==email).first():
             raise Exception("Usuario ya registrado")
@@ -20,7 +20,8 @@ def registrer_user(email:str,password:str,name:str):
         user = Users(
             email = email,
             hashed_password = hash_password(password),
-            name = name
+            name = name,
+            rol=rol
         )
         session.add(user)
         session.commit()

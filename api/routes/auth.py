@@ -8,15 +8,7 @@ from schemas.auth_schema import RegisterUser,LoginSchema
 from typing import Union
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/register",response_model=MessageResponse)
-async def register(data:RegisterUser):
-    try:
-        return registrer_user(data.email,data.password,data.name)
-    except Exception as e:
-        return {
-            "message":str(e),
-            "status_code":500
-        }
+
     
 @router.post("/login",response_model=Union[LoginSchemaResponse,MessageResponse])
 async def login_api(data:LoginSchema):

@@ -4,6 +4,7 @@ class RegisterUser(BaseModel):
     email:str
     password:str
     name:str
+    rol:str
 
 class LoginSchema(BaseModel):
     email: str
