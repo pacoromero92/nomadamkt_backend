@@ -1,4 +1,4 @@
-from fastapi import APIRouter,BackgroundTasks,Depends,HTTPException
+from fastapi import APIRouter,Depends,HTTPException
 import time
 from datetime import datetime
 from typing import Optional
@@ -20,8 +20,15 @@ def get_clients_api(
     return get_clients()
 
 @router.post("/")
-def post_client(data:ClientObject):
-    return create_clients(name=data.name,meta_addacount=data.meta_account)
+def post_client(data:ClientObject, current_user=Depends(get_current_user)):
+    (user_id,rol,_)=current_user
+       
+    if has_access(['Admin'],rol):
+        return create_clients(name=data.name,meta_addacount=data.meta_account,kpis=data.show_kpis)
+    else :
+        raise HTTPException(40)
+        
+    
 
 @router.get("/adaccounts",response_model=PaginatedResponse[AdAccountObject])
 async def get_unassign_adaccounts(
@@ -32,20 +39,21 @@ async def get_unassign_adaccounts(
     
         return get_adaccounts()
 
-@router.get("/adaccounts/{id}")
-async def get_unassign_adaccounts():
-    return get_adaccounts()
+
 
 
 @router.put("/{id}")
-def put_client(id:str,data:ClientObject):
-    return edit_client(id,data.name,data.ad_accounts)
+def put_client(id:str,
+               data:ClientObject, 
+               current_user=Depends(get_current_user)):
+    return edit_client(id,data.name,data.meta_account,data.show_kpis)
 
 
 
 @router.get("/{id}",response_model=ObjectRespose[ClientGetObject])
 def get_client_api(id:str,
-                    current_user=Depends(get_current_user)):
+                    current_user=Depends(get_current_user)
+                    ):
     (user_id,rol,_)=current_user
    
     if has_access(['Admin'],rol):

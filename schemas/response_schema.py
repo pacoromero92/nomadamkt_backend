@@ -12,6 +12,9 @@ class PaginatedResponse(BaseModel, Generic[T]):
     page_size: int
     total_pages: int
 
+class DataResponse(BaseModel,Generic[T]):
+    data:List[T]
+
 class MessageResponse(BaseModel):
     message :str
     status_code :int

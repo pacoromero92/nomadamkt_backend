@@ -1,13 +1,14 @@
 from fastapi import APIRouter,Depends,HTTPException
 from auth.utils import get_current_user
 from repositories.kpis_repository import get_kpis_available
-from schemas.response_schema import MessageResponse
+from schemas.response_schema import MessageResponse,DataResponse
 from schemas.auth_schema import RegisterUser
+from schemas.kpi_schemas import Kpi
 from repositories.users_repository import registrer_user
 router = APIRouter(prefix="/settings", tags=["Settings"])
 from auth.utils import has_access
 
-@router.get("/kpis")
+@router.get("/kpis",response_model=DataResponse[Kpi])
 def get_kpis(current_user=Depends(get_current_user)):
     return get_kpis_available()
 
