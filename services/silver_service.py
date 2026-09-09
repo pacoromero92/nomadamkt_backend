@@ -37,15 +37,13 @@ def process_to_silver():
             read_records = read_records+1
             row_json = row.raw_data
             message_connection = 0
-            cost_per_message =0.0
             views_view =0
             purchase = 0
-            cost_per_sale =0.0
+            leads = 0
             actions = row_json.get('actions',[])
-            cost_actions = row_json.get('cost_per_action_type',[])
             for action in actions:
                 if action['action_type']=='video_view':
-                   
+                  
                     views_view = action['value']
                 if action['action_type']=='onsite_conversion.total_messaging_connection':
                   
@@ -53,14 +51,10 @@ def process_to_silver():
                 if action['action_type']=='purchase':
                                   
                     purchase = action['value']
-            for action in cost_actions:
-                
-                if action['action_type']=='onsite_conversion.total_messaging_connection':
-                    
-                    cost_per_message = action['value']
-                if action['action_type']=='purchase':
-                                    
-                    cost_per_sale = action['value']
+                if action['action_type']=='lead':
+                                                  
+                    leads = action['value']
+           
                         
             data = {
                 "campaign_id":row_json.get("campaign_id"),
@@ -76,9 +70,8 @@ def process_to_silver():
                 "spend":row_json.get("spend",0),
                 "videos_view" : views_view,
                 "message_connection":message_connection,
+                "leads":leads,
                 "purchase":purchase,
-                "cost_per_message":cost_per_message,
-                "cost_per_sale":cost_per_sale,
                 'ad_accounts_id':row.ad_accounts_id
             }
             upsert_silver_insight(data)
