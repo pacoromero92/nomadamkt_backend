@@ -2,15 +2,19 @@ from fastapi import APIRouter,Depends,HTTPException
 from auth.utils import get_current_user
 from repositories.kpis_repository import get_kpis_available,create_kpi,edit_kpi
 from schemas.response_schema import MessageResponse,DataResponse
-from schemas.auth_schema import RegisterUser
+from schemas.auth_schema import RegisterUser,UserResponse
 from schemas.kpi_schemas import Kpi
-from repositories.users_repository import registrer_user
+from repositories.users_repository import registrer_user,list_users
 router = APIRouter(prefix="/settings", tags=["Settings"])
 from auth.utils import has_access
 
 @router.get("/kpis",response_model=DataResponse[Kpi])
 def get_kpis(current_user=Depends(get_current_user)):
     return get_kpis_available()
+
+@router.get("/users",response_model=DataResponse[UserResponse])
+def get_users(current_user=Depends(get_current_user)):
+    return list_users()
 
 @router.post("/register",response_model=MessageResponse)
 async def register(data:RegisterUser,current_user=Depends(get_current_user)):

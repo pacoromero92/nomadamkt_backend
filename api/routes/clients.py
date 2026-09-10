@@ -6,7 +6,6 @@ from repositories.clients_repository import create_clients,get_clients,get_adacc
 
 from schemas.response_schema import PaginatedResponse,MessageResponse,ObjectRespose
 from schemas.client_schema import ClientObject,ClientGetObject,AdAccountObject
-from schemas.auth_schema import UserResponse
 from auth.utils import has_access
 from typing import Union
 from auth.utils import get_current_user

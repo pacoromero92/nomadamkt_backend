@@ -28,4 +28,13 @@ def registrer_user(email:str,password:str,name:str,rol:str):
         session.refresh(user)
         return {"message": "Usuario creado","status_code":202}
 
+def list_users():
+     print("here")
+     with SessionLocal() as session:
+          users = session.query(Users).all()
+          
+          return {
+               "data":users
+          }
+
         
