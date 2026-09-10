@@ -6,6 +6,7 @@ class Kpis(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     visible = Column(Boolean, default=True)
+    code = Column(String)
     clients = relationship(
         "Clients",
         secondary="kpis_clients",

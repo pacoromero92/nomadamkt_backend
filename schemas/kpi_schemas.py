@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 
 class Kpi(BaseModel):
-    id:int
+    id:int= None
     name:str
+    code:str
+
 

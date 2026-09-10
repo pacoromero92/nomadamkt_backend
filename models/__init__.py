@@ -9,3 +9,5 @@ from .pipeline_run import PipelineRun
 from .process_log import ProcessLog
 from .kpis import Kpis
 from .kpis_clients import Kpis_Clients
+from .gold_campaings import GoldCampaingsinsights
+from .gold_kpis import GoldKpis

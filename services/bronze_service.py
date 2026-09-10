@@ -4,6 +4,7 @@ from models.adaccount import Adaccount
 from models.adcampaigns import AdCampaingns
 from models.bronze import BronzeCampaignInsights
 from database import SessionLocal
+from datetime import date, timedelta
 import os
 import requests
 import json
@@ -55,6 +56,9 @@ def fetch_to_bronze():
                     "value": campaigns_id  # Solo traerá las campañas activas
                 }
             ]
+
+        today = date.today()
+        fifteen_days_ago = today - timedelta(days=15)
         parametos = {
             "access_token": FACEBOOK_TOKEN,
             "fields": "campaign_name,impressions,clicks,spend,campaign_id,adset_name,cpm,cpp,cpc,actions,cost_per_action_type,ad_name",   
@@ -64,8 +68,8 @@ def fetch_to_bronze():
             'time_increment': 1,
             "limit": 100   ,
             "time_range": json.dumps({
-                "since": "2026-08-01",
-                "until": "2026-08-31"
+                "since": fifteen_days_ago.strftime("%Y-%m-%d"),
+                    "until": today.strftime("%Y-%m-%d")
             })
             }
         i=0

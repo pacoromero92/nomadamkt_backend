@@ -1,6 +1,7 @@
 from services.bronze_service import fetch_to_bronze
 from services.silver_service import process_to_silver
 from services.adcampaings_service import fetch_campaings
+from services.gold_service import run_gold_process
 from repositories.pipeline_repository import start_pipeline,finish_pipeline,process_job
 from datetime import datetime
 import uuid
@@ -53,12 +54,12 @@ class PipelineService:
             duration = date-start_time
             self.finish_procees(execution_id,'silver_insights','silver',read_account=records,duration=duration.total_seconds()*1000,finish_at=date)
 
-            #start_time = datetime.now()
-            #self.start_procees(execution_id,'gold_insights','gold')
-            #records = fetch_gold()
-            #date = datetime.now()
-            #duration = date-start_time
-            #self.finish_procees(execution_id,'gold_insights','gold',read_account=records,duration=duration.total_seconds()*1000,finish_at=date)
+            start_time = datetime.now()
+            self.start_procees(execution_id,'gold_insights','gold')
+            records = run_gold_process()
+            date = datetime.now()
+            duration = date-start_time
+            self.finish_procees(execution_id,'gold_insights','gold',read_account=records,duration=duration.total_seconds()*1000,finish_at=date)
 
 
             self.finish_log(execution_id)
