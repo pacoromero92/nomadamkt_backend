@@ -2,9 +2,10 @@ from fastapi import APIRouter,Depends,HTTPException
 from auth.utils import get_current_user
 from repositories.kpis_repository import get_kpis_available,create_kpi,edit_kpi
 from schemas.response_schema import MessageResponse,DataResponse
-from schemas.auth_schema import RegisterUser,UserResponse
+from schemas.auth_schema import RegisterUser,UserResponse,TokenSchema
 from schemas.kpi_schemas import Kpi
-from repositories.users_repository import registrer_user,list_users
+from repositories.users_repository import registrer_user,list_users,activate_user,reset_password
+from models.Role import Role
 router = APIRouter(prefix="/settings", tags=["Settings"])
 from auth.utils import has_access
 
@@ -16,12 +17,13 @@ def get_kpis(current_user=Depends(get_current_user)):
 def get_users(current_user=Depends(get_current_user)):
     return list_users()
 
-@router.post("/register",response_model=MessageResponse)
+@router.post("/user",response_model=MessageResponse)
 async def register(data:RegisterUser,current_user=Depends(get_current_user)):
     try:
-        (_,_,rol)=current_user
-        if has_access(['Admin'],rol):
-            return registrer_user(data.email,data.password,data.name,data.role)
+        id_user=current_user
+        
+        if has_access(roles=[Role.ADMIN],id_user=id_user):
+            return registrer_user(data.email,data.name,data.role)
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)
     except Exception as e:
@@ -29,6 +31,15 @@ async def register(data:RegisterUser,current_user=Depends(get_current_user)):
             "message":str(e),
             "status_code":500
         }
+
+@router.post("/user/activate")
+async def user_activate(data:TokenSchema):
+    return activate_user(token=data.token,password=data.password)
+
+@router.get("/user/forgot/{id}")
+async def user_forgot(id,current_user=Depends(get_current_user)):
+    if has_access(current_user,[Role.ADMIN]):
+        return reset_password(id)
 
 @router.post("/kpis",response_model=MessageResponse)
 def addkpi(data:Kpi,current_user=Depends(get_current_user)):

@@ -4,7 +4,7 @@ T = TypeVar('T')
 class UserResponse(BaseModel):
     name:str
     email:str
-    rol:str
+    role:str
 class PaginatedResponse(BaseModel, Generic[T]):
     data: List[T]
     total: int

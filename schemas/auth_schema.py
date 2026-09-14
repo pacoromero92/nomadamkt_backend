@@ -1,10 +1,9 @@
 from pydantic import BaseModel
-
+from models.Role import Role
 class RegisterUser(BaseModel):
     email:str
-    password:str
     name:str
-    rol:str
+    role:str
 
 class LoginSchema(BaseModel):
     email: str
@@ -14,4 +13,8 @@ class UserResponse(BaseModel):
     id:int 
     name:str
     email:str
-    rol:str
+    role:Role
+
+class TokenSchema(BaseModel):
+    token:str
+    password:str

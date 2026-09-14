@@ -7,7 +7,9 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import HTTPException,status,Depends
 import os
 from dotenv import load_dotenv
-
+from models.users import Users
+from database import SessionLocal
+from sqlalchemy.exc import SQLAlchemyError
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -50,9 +52,7 @@ async def get_current_user( token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id = payload.get("sub")
-        rol = payload.get("rol",'user')
-        email = payload.get("email")
-        if id is None or email is None:
+        if id is None:
             raise credentials_exception
         
     except JWEInvalidAuth:
@@ -67,11 +67,20 @@ async def get_current_user( token: str = Depends(oauth2_scheme)):
         print(e)
         raise Exception
     
-    return id,rol,email 
+    return id
 
 
-def has_access(rols=[],actual_rol=""):
-    if actual_rol in rols:
-        return True
-    else :
-        raise HTTPException(status_code=403,detail="You don't hace permission to access!")
+def has_access(id_user:int,roles=[]):
+    try:
+        with SessionLocal() as session:
+            user =session.query(Users).filter(Users.id == id_user).first()
+        
+        if user.role in roles:
+            return True
+        else :
+            raise HTTPException(status_code=403,detail="You don't hace permission to access!")
+    except SQLAlchemyError  as e:
+        print(e)
+        raise Exception("Error en base de datos")
+    except Exception as e:
+        raise Exception("Error de Servidor")

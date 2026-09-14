@@ -11,3 +11,4 @@ from .kpis import Kpis
 from .kpis_clients import Kpis_Clients
 from .gold_campaings import GoldCampaingsinsights
 from .gold_kpis import GoldKpis
+from .user_invitation import UserInvitations
