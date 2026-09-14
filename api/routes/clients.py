@@ -8,36 +8,48 @@ from schemas.response_schema import PaginatedResponse,MessageResponse,ObjectResp
 from schemas.client_schema import ClientObject,ClientGetObject,AdAccountObject
 from auth.utils import has_access
 from typing import Union
-from auth.utils import get_current_user
+from auth.utils import get_current_user,has_access
+from models.Role import Role
 router = APIRouter(prefix="/client", tags=["Clients"])
 
 @router.get("/",response_model=PaginatedResponse[ClientGetObject])
 def get_clients_api(
     current_user=Depends(get_current_user)
 ):
-    
-    return get_clients()
+    try:
+        id_user=current_user        
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+            return get_clients()
+    except HTTPException as e:
+        raise HTTPException(e.status_code,e.detail)
+    except Exception as e:
+        raise HTTPException(500,"Error")
 
 @router.post("/")
 def post_client(data:ClientObject, current_user=Depends(get_current_user)):
-    (user_id,rol,_)=current_user
+    try:
+        id_user=current_user        
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+            return create_clients(name=data.name,meta_addacount=data.meta_account,kpis=data.show_kpis)
+    except HTTPException as e:
+        raise HTTPException(e.status_code,e.detail)
+    except Exception as e:
+        raise HTTPException(500,"Error")
        
-    if has_access(['Admin'],rol):
-        return create_clients(name=data.name,meta_addacount=data.meta_account,kpis=data.show_kpis)
-    else :
-        raise HTTPException(40)
-        
     
 
 @router.get("/adaccounts",response_model=PaginatedResponse[AdAccountObject])
 async def get_unassign_adaccounts(
      current_user=Depends(get_current_user)
 ):
-    (user_id,rol,_)=current_user  
-    if has_access(['Admin'],rol):
-    
-        return get_adaccounts()
-
+    try:
+        id_user=current_user        
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+            return get_adaccounts()
+    except HTTPException as e:
+        raise HTTPException(e.status_code,e.detail)
+    except Exception as e:
+        raise HTTPException(500,"Error")
 
 
 
@@ -45,7 +57,15 @@ async def get_unassign_adaccounts(
 def put_client(id:str,
                data:ClientObject, 
                current_user=Depends(get_current_user)):
-    return edit_client(id,data.name,data.meta_account,data.show_kpis)
+    
+    try:
+        id_user=current_user        
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+            return edit_client(id,data.name,data.meta_account,data.show_kpis)
+    except HTTPException as e:
+        raise HTTPException(e.status_code,e.detail)
+    except Exception as e:
+        raise HTTPException(500,"Error")
 
 
 
@@ -53,10 +73,16 @@ def put_client(id:str,
 def get_client_api(id:str,
                     current_user=Depends(get_current_user)
                     ):
-    (user_id,rol,_)=current_user
+    try:
+        id_user=current_user        
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+           return get_client(id)
+    except HTTPException as e:
+        raise HTTPException(e.status_code,e.detail)
+    except Exception as e:
+        raise HTTPException(500,"Error")
    
-    if has_access(['Admin'],rol):
-        return get_client(id)
+        
     
 
 

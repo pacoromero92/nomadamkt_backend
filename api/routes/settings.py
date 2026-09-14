@@ -40,13 +40,13 @@ async def user_activate(data:TokenSchema):
 async def user_forgot(id,current_user=Depends(get_current_user)):
     if has_access(current_user,[Role.ADMIN]):
         return reset_password(id)
+    
 
 @router.post("/kpis",response_model=MessageResponse)
 def addkpi(data:Kpi,current_user=Depends(get_current_user)):
     try:
-        (_,rol,_)=current_user
-        print(rol)
-        if has_access(['Admin'],rol):
+        id_user=current_user   
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
             return create_kpi(data.name,True,data.code)
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)
@@ -57,12 +57,12 @@ def addkpi(data:Kpi,current_user=Depends(get_current_user)):
 @router.put("/kpis/{id}",response_model=MessageResponse)
 def editkpi(id:int,data:Kpi,current_user=Depends(get_current_user)):
     try:
-        (_,rol,_)=current_user
-        print(rol)
-        if has_access(['Admin'],rol):
+        id_user=current_user
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
             return edit_kpi(id,data.name,True,data.code)
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)
     except Exception as e:
         print(e)
         raise HTTPException(500,"Error")
+
