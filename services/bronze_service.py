@@ -58,7 +58,7 @@ def fetch_to_bronze():
             ]
 
         today = date.today()
-        fifteen_days_ago = today - timedelta(days=15)
+        fifteen_days_ago = today - timedelta(days=31)
         parametos = {
             "access_token": FACEBOOK_TOKEN,
             "fields": "campaign_name,impressions,clicks,spend,campaign_id,adset_name,cpm,cpp,cpc,actions,cost_per_action_type,ad_name",   
