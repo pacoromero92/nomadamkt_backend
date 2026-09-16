@@ -15,8 +15,9 @@ def run_gold_process():
     df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month
+    df['lead']=df['leads']
     df_agg = df.groupby(['campaign_id','ad_name','adset_name','month','year','ad_accounts_id'])[['impressions', 'clicks', 'spend', 'cpm', 'cpc', 'cpp', 'videos_view',
-       'message_connection', 'purchase']].sum().reset_index()
+       'message_connection', 'purchase','lead']].sum().reset_index()
 
     if df_agg.empty:
         raise Exception("Silver doesn't have records")
@@ -24,7 +25,7 @@ def run_gold_process():
     data = df_agg.to_dict(orient="records")
     upsert_gold_insight(data)
     df_kpi = df.groupby(['month','year','ad_accounts_id'])[['impressions', 'clicks', 'spend', 'cpm', 'cpc', 'cpp', 'videos_view',
-       'message_connection', 'purchase']].sum().reset_index()
+       'message_connection', 'purchase','leads']].sum().reset_index()
     kpis = get_kpis()
     if not kpis:
         raise Exception("There are no kpis configured")
