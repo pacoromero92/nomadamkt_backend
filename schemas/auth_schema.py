@@ -14,6 +14,7 @@ class UserResponse(BaseModel):
     name:str
     email:str
     role:Role
+    is_active:bool
 
 class TokenSchema(BaseModel):
     token:str
