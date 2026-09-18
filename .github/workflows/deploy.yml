@@ -57,7 +57,7 @@ jobs:
             sudo -n systemctl is-active --quiet apiperformance.service
 
             echo "✅ Backend desplegado correctamente"
-            - name: Disable maintenance
+      - name: Disable maintenance
         if: success()
         uses: appleboy/ssh-action@v1
         with:
