@@ -36,7 +36,7 @@ jobs:
 
             echo "📥 Actualizando código..."
             git fetch origin
-            git reset --hard origin/main
+            git reset --hard origin/master
 
             echo "🐍 Activando entorno virtual..."
             source backend.venv/bin/activate
