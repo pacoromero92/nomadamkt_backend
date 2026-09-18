@@ -2,6 +2,7 @@ from services.bronze_service import fetch_to_bronze
 from services.silver_service import process_to_silver
 from services.adcampaings_service import fetch_campaings
 from services.gold_service import run_gold_process
+from services.adaccount_meta_service import get_adaccount_facebook
 from repositories.pipeline_repository import start_pipeline,finish_pipeline,process_job
 from datetime import datetime
 import uuid
@@ -34,6 +35,11 @@ class PipelineService:
             execution_id = uuid.uuid4()
             self.start_log(execution_id)
             start_time = datetime.now()
+            self.start_procees(execution_id,'addaccounts','bronze')
+            get_adaccount_facebook()
+            date = datetime.now()
+            duration = date-start_time
+            self.finish_procees(execution_id,'campaings','bronze',read_account=0,duration=duration.total_seconds()*1000,finish_at=date)
             self.start_procees(execution_id,'campaings','bronze')
             records =fetch_campaings()
             date = datetime.now()

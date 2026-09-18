@@ -9,3 +9,4 @@ passlib[bcrypt]
 cryptography
 requests
 argon2-cffi
+jinja2

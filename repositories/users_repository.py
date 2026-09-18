@@ -1,5 +1,6 @@
 from models.users import Users
 from models.user_invitation import UserInvitations
+from repositories.send_email_repository import send_emil_recovery_password
 from database import SessionLocal
 from auth.utils import hash_password, verify_password, create_access_token,create_refresh_token
 from fastapi import HTTPException
@@ -44,7 +45,8 @@ def registrer_user(email:str,name:str,role:str):
         )
         session.add(user_invitation)
         session.commit()
-        print(f"http://localhost:8000/activate-account?token={token}")
+        url = "https://performance.nomadadigital.mx/recovery/"+token+"/"
+        send_emil_recovery_password(user.email,url=url,name=user.name)
         return {"message": "Usuario creado","status_code":202}
 
 def list_users():
@@ -119,5 +121,6 @@ def reset_password(id_user):
             expires_at=expires_at
         )
         session.add(user_invitation)
-        print(token)
         session.commit()
+        url = "https://performance.nomadadigital.mx/recovery/"+token+"/"
+        send_emil_recovery_password(user.email,url=url,name=user.name)
