@@ -3,3 +3,6 @@
 *.csv
 *.pyc
 */__pycache__/*
+backend.venv/
+logs/
+__pycache__/
