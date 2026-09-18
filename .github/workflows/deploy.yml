@@ -48,13 +48,13 @@ jobs:
             alembic upgrade head
 
             echo "🔄 Reiniciando FastAPI..."
-            sudo -n systemctl restart apiperformance.service
+            sudo -n systemctl restart apiperformance
 
             echo "⏳ Esperando servicio..."
             sleep 3
 
             echo "🔎 Verificando servicio..."
-            sudo -n systemctl is-active --quiet apiperformance.service
+            sudo -n systemctl is-active apiperformance
 
             echo "✅ Backend desplegado correctamente"
       - name: Disable maintenance
