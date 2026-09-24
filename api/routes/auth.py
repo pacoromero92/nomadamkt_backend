@@ -2,9 +2,9 @@ from fastapi import APIRouter,HTTPException,Depends
 from datetime import date
 from typing import Optional
 from repositories.users_repository import registrer_user,login
-from auth.utils import get_refresh_token
+from auth.utils import get_refresh_token,get_current_user
 from schemas.response_schema import PaginatedResponse,MessageResponse,LoginSchemaResponse
-from schemas.auth_schema import RegisterUser,LoginSchema
+from schemas.auth_schema import RegisterUser,LoginSchema,UserResponse
 from typing import Union
 router = APIRouter(prefix="/auth", tags=["auth"])
 

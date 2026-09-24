@@ -120,9 +120,13 @@ def get_clients(id_user = None):
             "total_pages": 0  # ceil division
         }
     
-def get_adaccounts():
+def get_adaccounts(filter_available=True):
     with SessionLocal() as session:
-        query = session.query(Adaccount).filter(Adaccount.client_id == None )
+        query = session.query(Adaccount)
+        if filter_available:
+          
+            query = query.filter(Adaccount.client_id.is_(None))
+        
         total = query.count()
         rows = query.all()
         return {

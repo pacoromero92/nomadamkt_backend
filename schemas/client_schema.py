@@ -14,3 +14,10 @@ class ClientGetObject(BaseModel):
     name:str
     meta_account:Optional[AdAccountObject]=None
     show_kpis:Optional[list[int]] = None
+
+
+class AdAccountComplete(BaseModel):
+    id:int
+    name:str
+    platform:str
+    client_name:str

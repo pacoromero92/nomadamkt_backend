@@ -4,7 +4,9 @@ from repositories.kpis_repository import get_kpis_available,create_kpi,edit_kpi
 from schemas.response_schema import MessageResponse,DataResponse
 from schemas.auth_schema import RegisterUser,UserResponse,TokenSchema
 from schemas.kpi_schemas import Kpi
+from schemas.client_schema import AdAccountObject
 from repositories.users_repository import registrer_user,list_users,activate_user,reset_password
+from repositories.clients_repository import get_adaccounts
 from models.Role import Role
 router = APIRouter(prefix="/settings", tags=["Settings"])
 from auth.utils import has_access
@@ -60,6 +62,20 @@ def editkpi(id:int,data:Kpi,current_user=Depends(get_current_user)):
         id_user=current_user
         if has_access(id_user=id_user,roles=[Role.ADMIN]):
             return edit_kpi(id,data.name,True,data.code)
+    except HTTPException as e:
+        raise HTTPException(e.status_code,e.detail)
+    except Exception as e:
+        print(e)
+        raise HTTPException(500,"Error")
+
+@router.get("/adaccounts",response_model=DataResponse[AdAccountObject])
+def get_all_addaccounts(
+    current_user=Depends(get_current_user)
+):
+    try:
+        id_user=current_user
+        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+            return get_adaccounts(filter_available=False)
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)
     except Exception as e:
