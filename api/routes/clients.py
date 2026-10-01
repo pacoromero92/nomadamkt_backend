@@ -18,7 +18,7 @@ def get_clients_api(
 ):
     try:
         id_user=current_user        
-        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+        if has_access(id_user=id_user,roles=[Role.ADMIN,Role.MANAGER]):
             return get_clients()
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)
@@ -29,7 +29,7 @@ def get_clients_api(
 def post_client(data:ClientObject, current_user=Depends(get_current_user)):
     try:
         id_user=current_user        
-        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+        if has_access(id_user=id_user,roles=[Role.ADMIN,Role.MANAGER]):
             return create_clients(name=data.name,meta_addacount=data.meta_account,kpis=data.show_kpis)
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)
@@ -44,7 +44,7 @@ async def get_unassign_adaccounts(
 ):
     try:
         id_user=current_user        
-        if has_access(id_user=id_user,roles=[Role.ADMIN]):
+        if has_access(id_user=id_user,roles=[Role.ADMIN,Role.MANAGER]):
             return get_adaccounts()
     except HTTPException as e:
         raise HTTPException(e.status_code,e.detail)

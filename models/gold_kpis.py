@@ -1,5 +1,6 @@
 from sqlalchemy import  Column,BigInteger,Integer,UniqueConstraint,ForeignKey,Numeric
 from database import Base
+from sqlalchemy.orm import relationship
 
 class GoldKpis(Base):
     __tablename__ = 'gold_kpis'
@@ -9,6 +10,7 @@ class GoldKpis(Base):
     id_kpi = Column(Integer,ForeignKey("kpis.id"),primary_key=True)
     value = Column(Numeric)
     id_client = Column(Integer,ForeignKey("clients.id"),primary_key=True)
+    
     __table_args__ = (
                 UniqueConstraint('month','year','id_kpi','id_client'),
             )

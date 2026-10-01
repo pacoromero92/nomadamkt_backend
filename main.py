@@ -7,7 +7,7 @@ from api.routes.clients import router as client_router
 from api.routes.sync import router as services_router
 from fastapi.middleware.cors import CORSMiddleware
 from api.routes.settings import router as settings_router
-
+from api.routes.dashboard import router as dashboard_router
 
 
 
@@ -18,6 +18,7 @@ app.include_router(auth_router)
 app.include_router(client_router)
 app.include_router(services_router)
 app.include_router(settings_router)
+app.include_router(dashboard_router)
 origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 
 app.add_middleware(
