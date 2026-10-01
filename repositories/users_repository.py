@@ -24,7 +24,7 @@ def login(email:str,password:str):
 def registrer_user(email:str,name:str,role:str):
     with SessionLocal() as session:
         if session.query(Users).filter(Users.email==email).first():
-            raise Exception("Usuario ya registrado")
+            raise HTTPException(detail="Usuario ya registrado",status_code=400 )
         user = Users(
             email = email,
             name = name,
@@ -105,7 +105,6 @@ def edit_user(id,data):
         print(e)
         raise HTTPException(status_code=500,detail="Internal Server Error")
          
-
 def reset_password(id_user):
     with SessionLocal() as  session:
         user =  session.query(Users).filter(
